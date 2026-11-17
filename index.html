@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Martor în 36 de cadre · Atelierul de fotografie analog</title>
+<meta name="description" content="Atelier de fotografie analog alb-negru: 36 de cadre, lumină, timp, diafragmă, laborator și fotografia ta finală.">
+<meta name="author" content="LEETUCATION SRL">
+<meta name="theme-color" content="#1F1D1E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="36 de cadre">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" type="image/png" href="media/brand/app-icon-192.png">
+<link rel="apple-touch-icon" href="media/brand/app-icon-180.png">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/player.css">
+<link rel="stylesheet" href="css/slides.css">
+<link rel="stylesheet" href="css/phone.css">
+<script>
+  // Modul telefon din prima clipă (înainte să se afișeze ceva); player.js îl ține apoi la zi.
+  (function () {
+    var d = document.documentElement, w = d.clientWidth, h = d.clientHeight;
+    if (!w || Math.min(w / 1920, h / 1224) >= 0.5) { return; }
+    var z = Math.max(0.55, Math.min(0.75, w / 600));
+    d.className += ' m' + (w / z >= 960 ? ' m-wide' : '');
+    d.style.setProperty('--z', z.toFixed(4));
+    d.style.setProperty('--vw', Math.floor(w / z) + 'px');
+    d.style.setProperty('--vhz', Math.floor(h / z) + 'px');
+  })();
+</script>
+</head>
+<body>
+<div class="app" id="app">
+  <main class="stage" id="stage" aria-label="Atelierul de fotografie analog">
+    <section class="slide" id="slide" aria-live="off"></section>
+    <div class="intro" id="intro">
+      <video id="introVideo" src="media/brand/cp-logo-animat.mp4" muted playsinline preload="auto" aria-label="Finanțat de Municipiul Timișoara prin Centrul de Proiecte"></video>
+      <button class="btn skip" id="skipIntro">Sari peste</button>
+    </div>
+  </main>
+  <div class="cc is-off" id="cc" aria-hidden="true"><span></span></div>
+  <nav class="bar" id="bar" aria-label="Controalele atelierului"></nav>
+  <p class="sr-only" id="live" aria-live="polite"></p>
+</div>
+<noscript><p style="color:#fff;font:20px sans-serif;padding:40px">Atelierul are nevoie de JavaScript. Deschide-l într-un browser actual (Chrome, Edge, Firefox sau Safari).</p></noscript>
+<script src="js/config.js"></script>
+<script src="audio/vo.js"></script>
+<script src="js/scorm_api.js"></script>
+<script src="js/slides.js"></script>
+<script src="js/extras.js"></script>
+<script src="js/player.js"></script>
+</body>
+</html>

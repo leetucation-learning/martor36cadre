@@ -1,0 +1,220 @@
+/* IS89 · Martorul anonim · player HTML
+   Identitate: logo-ul Imagine Sunet '89 — gri „dot-matrix”, roșu '89, cian pentru sunet.
+   Roșu = semnul tău (alegeri, firul roșu). Cian = vocea și subtitrarea. Restul: cerneală și gri pe hârtie. */
+:root {
+  --paper: #FFFFFF;
+  --table: #E9EAEB;
+  --table-2: #DCDDDF;
+  --ink: #231F20;
+  --ink-2: #4F4C4D;
+  --dot: #656263;
+  --line: #C4C3C4;
+  --red: #ED1C24;
+  --red-ink: #C8141B;
+  --cyan: #00ADEF;
+  --film: #1F1D1E;
+  --film-2: #2E2B2C;
+  --film-text: #B9B6B7;
+  --sans: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
+  --serif: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+  --dots: 'Doto', 'IBM Plex Sans', sans-serif;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #161415; }
+body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+button, input, textarea { font: inherit; color: inherit; }
+img { display: block; max-width: 100%; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- Cadrul aplicației: scena 1920 × 1080 + subtitrare + bara de control, scalate împreună ---------- */
+.app { position: fixed; left: 0; top: 0; width: 1920px; height: 1224px; transform-origin: 0 0; }   /* fixed: pânza lată nu face pagina mai lată (tabletele n-o micșorează) */
+.stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; overflow: clip; background: var(--table); }   /* clip: scena nu se derulează niciodată, nici din cod */
+.slide { position: absolute; inset: 0; }
+.slide--paper { background: var(--paper); }
+
+.focus-ring, :focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+.bar :focus-visible, .modal--dark :focus-visible { outline-color: var(--cyan); }
+
+/* ---------- Antet (layouturile cu colț) ---------- */
+.hdr { position: absolute; left: 0; right: 0; top: 0; height: 104px; display: flex; align-items: center; gap: 26px; padding: 0 96px; }
+.hdr-logo { width: 116px; height: auto; }
+.hdr-mod { margin: 0; display: flex; align-items: center; gap: 14px; font-size: 22px; font-weight: 500; color: var(--ink-2); }
+.hdr-mod .num { font-size: 34px; line-height: 1; color: var(--dot); }
+.tools { margin-left: auto; display: flex; gap: 16px; }
+.tool { display: flex; align-items: center; gap: 14px; height: 68px; padding: 0 22px 0 8px; border: 2px solid var(--line); border-radius: 6px; background: var(--paper); cursor: pointer; font-size: 22px; font-weight: 600; }
+.tool:hover { border-color: var(--ink); }
+.tool-thumb { position: relative; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 3px; overflow: visible; }
+.tool-thumb img { width: 52px; height: 52px; object-fit: cover; border-radius: 3px; }
+.tool-thumb--empty { border: 2px dashed var(--dot); color: var(--dot); font-size: 26px; font-weight: 600; }
+.tool-thumb--phrase { background: var(--red-ink); color: #fff; font-family: var(--serif); font-style: italic; font-size: 19px; }
+.tool-thumb .ring { position: absolute; inset: -9px; width: 70px; height: 70px; pointer-events: none; }
+.tool svg.ico { width: 34px; height: 34px; }
+.rule-dots { position: absolute; left: 96px; right: 96px; top: 103px; height: 4px;
+  background-image: radial-gradient(circle, var(--dot) 1.5px, transparent 1.9px); background-size: 9px 4px; background-repeat: repeat-x; opacity: .9; }
+.body { position: absolute; left: 0; right: 0; top: 104px; bottom: 0; padding: 52px 96px 56px; }
+
+/* ---------- Tipografie ---------- */
+.h1 { margin: 0 0 34px; font-size: 58px; line-height: 1.12; font-weight: 600; letter-spacing: -0.012em; }
+.h2 { margin: 0; font-size: 44px; line-height: 1.2; font-weight: 600; letter-spacing: -0.008em; }
+.h3 { margin: 0 0 10px; font-size: 30px; line-height: 1.3; font-weight: 600; }
+.p { margin: 0; font-size: 26px; line-height: 1.5; }
+.p + .p { margin-top: 14px; }
+.lead { margin: 0; font-size: 30px; line-height: 1.45; }
+.muted { color: var(--ink-2); }
+.small { font-size: 21px; line-height: 1.45; color: var(--ink-2); }
+.serif { font-family: var(--serif); }
+.num { font-family: var(--dots); font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.req { color: var(--red-ink); font-weight: 700; }
+
+/* ---------- Butoane ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 14px; min-height: 80px; padding: 0 36px; border-radius: 4px; border: 3px solid var(--ink); background: var(--paper); color: var(--ink); font-size: 26px; font-weight: 600; cursor: pointer; text-decoration: none; transition: background-color .15s, border-color .15s, color .15s; }
+.btn svg.ico { width: 30px; height: 30px; flex: none; }
+.btn:hover { border-color: var(--red-ink); color: var(--red-ink); }
+.btn--primary { background: var(--ink); color: #fff; }
+.btn--primary:hover { background: var(--red-ink); border-color: var(--red-ink); color: #fff; }
+.btn--small { min-height: 64px; padding: 0 26px; font-size: 23px; }
+.btn--link { min-height: 0; padding: 6px 0; border: 0; background: none; text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+.btn--link:hover { color: var(--red-ink); }
+.btn[disabled], .btn[aria-disabled="true"] { border-color: var(--line); background: var(--table-2); color: #7C797A; cursor: not-allowed; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+
+/* ---------- Opțiuni (radio ca „chip”-uri) și variante lungi ---------- */
+.opts { display: flex; flex-wrap: wrap; gap: 14px 14px; margin: 0; padding: 0; border: 0; }
+.opts legend { padding: 0; margin-bottom: 14px; font-size: 22px; font-weight: 600; }
+.opt { position: relative; display: inline-flex; }
+.opt input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.opt span { display: inline-flex; align-items: center; gap: 10px; min-height: 66px; padding: 0 28px; border: 2px solid var(--dot); border-radius: 999px; background: var(--paper); font-size: 24px; font-weight: 500; cursor: pointer; transition: background-color .15s, color .15s, border-color .15s; }
+.opt span::before { content: ''; width: 0; height: 22px; transition: width .15s; background: no-repeat center / 22px 22px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12.5l5 5L20 6.5' fill='none' stroke='%23ED1C24' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.opt:hover span { border-color: var(--ink); }
+.opt input:checked + span { background: var(--ink); border-color: var(--ink); color: #fff; font-weight: 600; }
+.opt input:checked + span::before { width: 22px; }
+.opt input:focus-visible + span { outline: 3px solid var(--ink); outline-offset: 4px; }
+
+.optl { position: relative; display: grid; grid-template-columns: 44px 44px 1fr; align-items: start; gap: 6px 14px; padding: 26px 30px; border: 2px solid var(--line); border-radius: 6px; background: var(--paper); cursor: pointer; }
+.optl input { position: absolute; opacity: 0; }
+.optl .radio { width: 36px; height: 36px; margin-top: 4px; border: 3px solid var(--ink); border-radius: 50%; display: grid; place-items: center; }
+.optl .radio::after { content: ''; width: 16px; height: 16px; border-radius: 50%; background: var(--red); transform: scale(0); transition: transform .15s var(--ease); }
+.optl .letter { font-size: 28px; font-weight: 700; line-height: 1.5; }
+.optl .txt { font-family: var(--serif); font-size: 32px; line-height: 1.5; }
+.optl:hover { border-color: var(--ink); }
+.optl:has(input:checked) { border: 4px solid var(--ink); padding: 24px 28px; }
+.optl:has(input:checked) .radio::after { transform: scale(1); }
+.optl:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 4px; }
+
+/* ---------- Câmpuri ---------- */
+.field { display: flex; flex-direction: column; gap: 10px; }
+.field label, .field .lbl { font-size: 22px; font-weight: 600; line-height: 1.35; }
+.field textarea, .field input[type=text] { width: 100%; border: 2px solid var(--dot); border-radius: 4px; background: var(--paper); padding: 14px 18px; font-size: 24px; line-height: 1.45; resize: none; }
+.field textarea:focus, .field input[type=text]:focus { outline: 3px solid var(--ink); outline-offset: 2px; border-color: var(--ink); }
+.field .count { align-self: flex-end; font-size: 18px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.field textarea::placeholder { color: var(--dot); }
+
+/* ---------- Note, sfaturi, citate ---------- */
+.tip { display: grid; grid-template-columns: 34px 1fr; gap: 16px; align-items: start; padding: 22px 26px; background: var(--table-2); border-radius: 4px; font-size: 24px; line-height: 1.45; }
+.slide--paper .tip { background: var(--table); }
+.tip svg.ico { width: 32px; height: 32px; margin-top: 2px; color: var(--ink-2); }
+.tip p { margin: 0; }
+.quote { position: relative; padding-left: 44px; font-family: var(--serif); font-style: italic; font-weight: 400; }
+.quote::before { content: ''; position: absolute; left: 0; top: .2em; bottom: .2em; width: 6px; background: var(--red); border-radius: 3px; }
+.block { padding-top: 22px; background-image: radial-gradient(circle, var(--dot) 1.4px, transparent 1.8px); background-size: 9px 4px; background-repeat: repeat-x; background-position: 0 0; }
+
+/* ---------- Fotografii: printuri cu ramă albă, colțuri drepte ---------- */
+.print { position: relative; background: var(--paper); padding: 12px; border: 1px solid #D3D2D3; }
+.print img { width: 100%; height: 100%; object-fit: contain; }
+.print-btn { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; text-align: left; }
+.print-btn .print { transition: border-color .15s; }
+.print-btn:hover .print { border-color: var(--ink); }
+.cap { margin-top: 10px; font-size: 21px; font-weight: 500; color: var(--ink-2); }
+
+/* Cercul de creion gras (marcajul editorului pe foaia de contact) */
+.ring { position: absolute; pointer-events: none; overflow: visible; }
+.ring path { fill: none; stroke: var(--red); stroke-width: 7; stroke-linecap: round; stroke-dasharray: 2400; stroke-dashoffset: 2400; transition: stroke-dashoffset .75s var(--ease); }
+.is-chosen .ring path, .ring.is-on path { stroke-dashoffset: 0; }
+.mark { position: absolute; display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px 4px 10px; background: var(--paper); border: 2px solid var(--red); border-radius: 999px; color: var(--red-ink); font-size: 20px; font-weight: 700; }
+.mark svg.ico { width: 22px; height: 22px; color: var(--red); }
+
+/* ---------- Banda de film ---------- */
+.film { position: relative; background: var(--film); padding: 38px 0; }
+.film::before, .film::after { content: ''; position: absolute; left: 0; right: 0; height: 14px;
+  background-image: linear-gradient(90deg, transparent 0 10px, rgba(233, 234, 235, .92) 10px 30px, transparent 30px 40px); background-size: 40px 14px; }
+.film::before { top: 12px; } .film::after { bottom: 12px; }
+.film-row { display: flex; justify-content: space-between; gap: 24px; padding: 0 30px; }
+.film-frame { position: relative; flex: 1; background: #0E0D0D; display: grid; place-items: center; overflow: hidden; }
+.film-frame img { width: 100%; height: 100%; object-fit: cover; }
+.film-frame { overflow: hidden; }
+.film-edge { position: absolute; left: 0; top: 0; padding: 4px 10px 6px; background: var(--film); color: #E9EAEB; font-size: 22px; line-height: 1; }
+
+/* ---------- Mesaje (banner, toast, feedback) ---------- */
+.banner { position: absolute; right: 96px; bottom: 40px; display: flex; align-items: center; gap: 18px; max-width: 900px; padding: 20px 20px 20px 28px; background: var(--ink); color: #fff; border-left: 8px solid var(--red); border-radius: 4px; font-size: 24px; line-height: 1.4; box-shadow: 0 14px 30px -18px rgba(0, 0, 0, .55); animation: pop .25s var(--ease); z-index: 5; }
+.banner .x { margin-left: 8px; width: 48px; height: 48px; flex: none; border: 2px solid rgba(255,255,255,.4); border-radius: 50%; background: transparent; color: #fff; cursor: pointer; display: grid; place-items: center; }
+.banner .x:hover { border-color: #fff; }
+.banner .x svg { width: 22px; height: 22px; }
+.toast { position: absolute; bottom: 40px; display: inline-flex; align-items: center; gap: 12px; padding: 16px 26px; background: var(--paper); border: 3px solid var(--ink); border-radius: 999px; font-size: 22px; font-weight: 600; animation: pop .25s var(--ease); z-index: 5; }
+.toast svg { width: 24px; height: 24px; color: var(--red); }
+.feedback { display: grid; grid-template-columns: 56px 1fr; gap: 18px; padding: 30px 34px; border-radius: 6px; }
+.feedback--ok { background: var(--ink); color: #fff; }
+.feedback--no { background: var(--paper); border: 3px solid var(--ink); }
+.feedback .badge { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; }
+.feedback--ok .badge { background: var(--paper); color: var(--ink); }
+.feedback--no .badge { background: var(--ink); color: #fff; }
+.feedback .badge svg { width: 30px; height: 30px; }
+.feedback .h3 { margin-bottom: 6px; }
+@keyframes pop { from { opacity: 0; transform: translateY(10px); } }
+
+/* ---------- Apariția pe voce (cue-uri) ---------- */
+[data-cue] { transition: opacity .55s var(--ease), transform .55s var(--ease); transition-delay: var(--d, 0ms); }
+.cue-wait { opacity: 0; transform: translateY(16px); visibility: hidden; transition: none; }
+.cue-wait .develop, .develop.cue-wait { animation: none; }
+.cue-in .develop, .develop.cue-in { animation: develop 1.8s var(--ease) both; animation-delay: var(--d, 0ms); }
+@keyframes develop { 0% { opacity: 0; filter: brightness(2.1) contrast(.3) saturate(0); } 30% { opacity: 1; } 100% { opacity: 1; filter: none; } }
+@media (prefers-reduced-motion: reduce) {
+  [data-cue] { transition: opacity .2s linear; transform: none !important; }
+  .cue-in .develop, .develop.cue-in { animation: none; }
+  .ring path { transition: none; }
+  .banner, .toast { animation: none; }
+}
+
+/* ---------- Intro (logo animat) ---------- */
+.intro { position: absolute; inset: 0; z-index: 50; background: #fff; display: grid; place-items: center; transition: opacity .6s var(--ease); }
+.intro video, .intro img { width: 1080px; height: 1080px; object-fit: contain; }
+.intro.is-out { opacity: 0; pointer-events: none; }
+.intro .skip { position: absolute; right: 48px; bottom: 40px; }
+
+/* ---------- Ferestre (straturi modale, lightbox) ---------- */
+.modal { position: absolute; inset: 0; z-index: 20; display: grid; place-items: center; background: rgba(31, 29, 30, .78); animation: fade .2s linear; }
+.modal-body { display: contents; }   /* pe pânză nu contează; pe telefon (css/phone.css) e zona care se derulează */
+.modal-panel { position: relative; background: var(--paper); border-radius: 6px; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .6); padding: 48px 56px; max-height: 1000px; overflow: auto; }
+.modal-x { position: absolute; right: 22px; top: 22px; width: 60px; height: 60px; border: 2px solid var(--line); border-radius: 50%; background: var(--paper); display: grid; place-items: center; cursor: pointer; }
+.modal-x:hover { border-color: var(--ink); }
+.modal-x svg { width: 26px; height: 26px; }
+@keyframes fade { from { opacity: 0; } }
+
+/* ---------- Subtitrare și bara de control ---------- */
+.cc { height: 64px; background: #121011; color: #fff; display: flex; align-items: center; justify-content: center; padding: 0 120px; font-size: 25px; line-height: 1.3; text-align: center; }
+.cc span { display: inline-block; max-width: 1600px; padding-left: 18px; border-left: 5px solid var(--cyan); text-align: left; }
+.cc.is-off span { display: none; }
+.bar { position: relative; height: 80px; background: var(--film); color: #fff; display: flex; align-items: center; gap: 10px; padding: 0 28px; }
+.bar-progress { position: absolute; left: 0; top: 0; height: 4px; width: 0; background: var(--cyan); transition: width .2s linear; }
+.bar-btn { display: inline-flex; align-items: center; gap: 10px; height: 56px; min-width: 56px; padding: 0 14px; border: 0; border-radius: 6px; background: transparent; color: #fff; font-size: 21px; font-weight: 500; cursor: pointer; }
+.bar-btn svg { width: 28px; height: 28px; }
+.bar-btn:hover { background: var(--film-2); }
+.bar-btn[aria-pressed="true"] { color: var(--cyan); }
+.bar-btn[disabled] { color: #6A6667; cursor: not-allowed; background: transparent; }
+.bar-btn.is-attn { color: var(--cyan); box-shadow: inset 0 0 0 2px var(--cyan); }
+.bar-label { margin-left: 8px; font-size: 20px; color: var(--film-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 560px; }
+.bar-label b { color: #fff; font-weight: 600; margin-right: 8px; }
+.bar-voice { margin-left: auto; display: flex; align-items: center; gap: 4px; padding: 0 12px; border-left: 1px solid #3A3637; border-right: 1px solid #3A3637; }
+.bar-nav { display: flex; gap: 10px; margin-left: 12px; }
+.bar-nav .bar-btn { padding: 0 22px; background: var(--film-2); }
+.bar-nav .bar-btn:hover { background: #3B3738; }
+.bar-nav .bar-btn[disabled] { background: transparent; }
+.bar-rate { font-variant-numeric: tabular-nums; min-width: 64px; justify-content: center; }
+
+/* În timpul logo-ului animat, bara de control nu e încă activă */
+.app.is-intro .bar > *, .app.is-intro .cc span { visibility: hidden; }
+
+/* ---------- Ecrane speciale ---------- */
+.end { position: absolute; inset: 0; z-index: 60; background: var(--paper); display: grid; place-items: center; text-align: center; }
